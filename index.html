@@ -20,6 +20,7 @@
       --mint: #76d7c4;
       --shadow: 0 22px 52px rgba(111, 68, 22, .17);
       --soft-shadow: 0 12px 26px rgba(111, 68, 22, .12);
+      --app-height: 100svh;
     }
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html, body { margin: 0; min-height: 100%; height: 100%; }
@@ -37,11 +38,12 @@
     img { display: block; max-width: 100%; }
     .app-shell {
       width: min(450px, 100%);
-      height: 100svh;
-      min-height: 100svh;
+      height: var(--app-height);
+      min-height: var(--app-height);
       margin: 0 auto;
       padding: max(10px, env(safe-area-inset-top)) 16px max(12px, env(safe-area-inset-bottom));
       display: flex;
+      overflow: hidden;
     }
     .phone-card {
       width: 100%; height: 100%; min-height: 0;
@@ -117,6 +119,29 @@
     .message { min-height: 45px; padding: 12px 14px; border-radius: 20px; background: rgba(255,255,255,.74); color: var(--muted); text-align: center; font-weight: 1000; line-height: 1.3; box-shadow: 0 8px 18px rgba(111,68,22,.08); }
     .message.good { color: #1b9a5a; background: rgba(228, 255, 240, .86); }
     .message.warn { color: #c56700; background: rgba(255, 243, 218, .92); }
+
+    /* Mobile browser game layout: keep the feed button above Safari/WhatsApp bottom bars. */
+    #gameScreen {
+      padding: 12px 14px max(12px, env(safe-area-inset-bottom));
+      overflow: hidden;
+      gap: 0;
+    }
+    #gameScreen .game-header { gap: 8px; flex: 0 0 auto; }
+    #gameScreen .ghost-btn { padding: 8px 12px; font-size: 15px; }
+    #gameScreen .progress-card { padding: 10px 12px; border-radius: 22px; flex: 0 0 auto; }
+    #gameScreen .progress-row { margin-bottom: 6px; font-size: 16px; }
+    #gameScreen .bar { height: 12px; }
+    #gameScreen .stage { flex: 1 1 0; min-height: 238px; margin: 8px 0; border-radius: 28px; }
+    #gameScreen .game-pet-name,
+    #gameScreen .scene-name { top: 10px; padding: 7px 10px; font-size: 13px; }
+    #gameScreen .pet-stage { width: clamp(142px, 42vw, 188px); }
+    #gameScreen .food { width: clamp(96px, 29vw, 128px); height: clamp(96px, 29vw, 128px); bottom: 8px; }
+    #gameScreen .plate { width: clamp(130px, 38vw, 160px); height: 34px; bottom: 8px; }
+    #gameScreen .stage::after { width: clamp(170px, 58vw, 230px); height: 30px; bottom: 52px; }
+    #gameScreen .message { flex: 0 0 auto; min-height: 38px; padding: 9px 12px; border-radius: 18px; font-size: 15px; }
+    #gameScreen .bottom-actions { flex: 0 0 auto; margin-top: 6px; gap: 0; padding-bottom: max(4px, env(safe-area-inset-bottom)); }
+    #gameScreen #feedBtn { padding: 14px 16px; font-size: 19px; border-radius: 24px; }
+
     .completion { position: absolute; inset: 0; display: none; place-items: center; padding: 24px; background: rgba(255, 247, 232, .92); backdrop-filter: blur(10px); z-index: 20; }
     .completion.show { display: grid; animation: popIn .25s ease both; }
     .completion-card { width: min(350px, 100%); border-radius: 34px; background: #fffdf7; padding: 18px 18px 22px; text-align: center; box-shadow: var(--shadow); border: 2px solid #fff; }
@@ -149,7 +174,7 @@
     button { box-shadow: none !important; text-shadow: none !important; }
     @media (max-height: 700px) {
       .app-shell { padding-top: 8px; padding-bottom: 8px; }
-      .phone-card, .screen { min-height: calc(100vh - 16px); }
+      .phone-card, .screen { min-height: 0; }
       #startScreen .top-row { transform: scale(.94); transform-origin: top center; }
       #startScreen .brand-badge { width: 72px; height: 72px; margin-bottom: 6px; }
       #startScreen .brand-badge img { width: 60px; height: 60px; }
@@ -160,6 +185,21 @@
       #startScreen .goal-chip { padding: 8px 6px; }
       #startScreen .primary-btn { padding: 13px 14px; }
       #startScreen .parent-note { font-size: 11px; padding: 8px 10px; }
+      #gameScreen { padding: 8px 10px max(8px, env(safe-area-inset-bottom)); }
+      #gameScreen .game-header { gap: 6px; }
+      #gameScreen .ghost-btn { padding: 7px 10px; font-size: 14px; }
+      #gameScreen .progress-card { padding: 8px 10px; border-radius: 19px; }
+      #gameScreen .progress-row { font-size: 15px; margin-bottom: 5px; }
+      #gameScreen .bar { height: 10px; }
+      #gameScreen .stage { min-height: 198px; margin: 6px 0; border-radius: 24px; }
+      #gameScreen .pet-stage { width: clamp(124px, 36vw, 156px); }
+      #gameScreen .food { width: clamp(82px, 25vw, 108px); height: clamp(82px, 25vw, 108px); }
+      #gameScreen .plate { width: clamp(112px, 34vw, 140px); height: 30px; }
+      #gameScreen .stage::after { bottom: 46px; height: 26px; }
+      #gameScreen .game-pet-name,
+      #gameScreen .scene-name { top: 8px; padding: 6px 9px; font-size: 12px; }
+      #gameScreen .message { min-height: 32px; padding: 7px 10px; font-size: 14px; }
+      #gameScreen #feedBtn { padding: 12px 14px; font-size: 18px; }
     }
 
     @media (max-height: 760px) {
@@ -271,6 +311,19 @@
   </main>
 
   <script>
+    function syncAppHeight() {
+      const viewport = window.visualViewport;
+      const height = viewport ? viewport.height : window.innerHeight;
+      if (height) document.documentElement.style.setProperty('--app-height', `${Math.floor(height)}px`);
+    }
+    syncAppHeight();
+    window.addEventListener('resize', syncAppHeight, { passive: true });
+    window.addEventListener('orientationchange', () => setTimeout(syncAppHeight, 250), { passive: true });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', syncAppHeight, { passive: true });
+      window.visualViewport.addEventListener('scroll', syncAppHeight, { passive: true });
+    }
+
     const scenes = [
       { name: '家中飯枱', file: 'home-table', trait: '最溫暖' },
       { name: '日式小廚房', file: 'kitchen', trait: '叮叮香味' },

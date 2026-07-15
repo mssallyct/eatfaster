@@ -49,6 +49,11 @@
    - English：`assets/voices/encourage-en.mp3`
    - 不再引用國語 `encourage-zh.mp3`。
 
+8. **進食版面手機尺寸已修正**
+   - 使用 `visualViewport` 動態高度，避免 Safari / WhatsApp 內置瀏覽器底欄遮住內容。
+   - 已壓縮進度卡、舞台、訊息列和餵食按鈕高度。
+   - 「餵寵物一啖！」按鈕現在會留在手機可見範圍內。
+
 ## 已保留的 Gemini 圖像要求
 
 正式 App 圖像已按用戶確認風格：
