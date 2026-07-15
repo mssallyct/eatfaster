@@ -1,0 +1,26 @@
+# Keep GitHub Pages deploy small: only runtime app assets are published.
+
+# generated/raw design assets
+assets/gemini-raw/
+assets/gemini-drafts/
+assets/gemini-v2/
+
+# old / unused sound experiments and raw downloads
+assets/sounds/download-cache*/
+assets/sounds/real50/
+assets/sounds/chewing10/
+assets/sounds/animal-*.mp3
+assets/sounds/*.ogg
+assets/sounds/*.wav
+assets/sounds/*.mp3
+!assets/sounds/pet-calls/*.mp3
+!assets/voices/*.mp3
+
+# local scripts / generated tooling
+scripts/
+
+# local temp files
+*.tmp
+*.bak
+.DS_Store
+Thumbs.db
